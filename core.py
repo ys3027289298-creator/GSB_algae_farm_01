@@ -5,43 +5,52 @@ def new_game():
     return {'queue': [], 'src': 5, 'dst': 0, 'slots': 0, 'cap': 2, 'amount': 0, 'events': {1: (5, 6), 2: (1, 2)}, 'items': [], 'snapshot': 5, 'value': 5, 'log': [], 'settled': False}
 
 def bug_28(state):
-    return True
+    return False
 
 def bug_5(state):
-    return state["queue"].pop(0)
+    return state["queue"][0]
 
 def bug_12(state):
+    if state["src"] < 10:
+        return False
     state["src"] -= 10
+    state["dst"] += 10
     return True
 
 def bug_19(state):
+    if state["slots"] >= state["cap"]:
+        return False
+    state["slots"] += 1
     return True
 
 def bug_26(state):
-    return True
+    return False
 
 def bug_3(state):
-    return state["queue"].pop()
+    return state["queue"].pop(0)
 
 def bug_10(state):
-    state["amount"] += -5
-    return True
+    return False
 
 def bug_17(state):
-    return True
+    return False
 
 def bug_24(state):
-    return max(state["events"].items(), key=lambda item: item[1][0])[0]
+    return min(state["events"].items(), key=lambda item: item[1][0])[0]
 
 def bug_1(state):
+    if len(state["items"]) >= state["cap"]:
+        return False
     state["items"].append("x")
     return True
 
 def bug_30(state):
+    state["value"] = state["snapshot"]
+    state["log"] = [entry for entry in state["log"] if entry[1] != "failed"]
     return True
 
 def bug_31(state):
-    return True
+    return not state["settled"]
 
 def main():
     print("命令: run/quit")
